@@ -1,2 +1,2 @@
 # YT_bot
-youtube vide and audio downloader
+youtube video and audio downloader
