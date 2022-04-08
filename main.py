@@ -85,8 +85,8 @@ def download_me() -> None:
 
 
 def main():
-    urll = input("enter url: ")
-    download_me(urll)
+
+    download_me()
 
 
 if __name__ == "__main__":
