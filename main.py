@@ -67,7 +67,7 @@ def download_me() -> None:
     while True:
         url = 'https://youtube.com/playlist?list=PLF0tazU4jPNKsy2IahyE2tMntaLGZ-Js-'
         if "playlist" in url:
-            p = Playlist(url=url[0])
+            p = Playlist(url=url)
             for vid in p.videos:
                 size = convert_bytes(vid.streams.get_highest_resolution().filesize)
                 resolution = vid.streams.get_highest_resolution().resolution
