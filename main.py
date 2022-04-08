@@ -73,14 +73,14 @@ def download_me() -> None:
                 resolution = vid.streams.get_highest_resolution().resolution
                 title = vid.title
                 print("title: " + title + "|| resolution: " + resolution + "|| file size: " + size)
-                vid.streams.get_highest_resolution().download(output_path='C:/Users/msi/Desktop/YT_bot')
+                vid.streams.get_highest_resolution().download(output_path='.')
         elif "single video" in url:
             v = YouTube(url[0], on_progress_callback=on_progress)
             size = convert_bytes(v.streams.get_highest_resolution().filesize)
             # resolution = v.streams.get_highest_resolution().resolution
             title = v.title
             print("title: " + title + "|| resolution: " + "|| file size: " + size)
-            v.streams.get_highest_resolution().download(output_path='C:/Users/msi/Desktop/YT_bot')
+            v.streams.get_highest_resolution().download(output_path='.')
             print(f'\nFinished downloading:  {v.title}' + reset_color)
 
 
