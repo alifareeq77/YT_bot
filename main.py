@@ -1,56 +1,92 @@
-import requests as requests
-# from pytube import YouTube
-# from pytube import Playlist
-import re
+# import requests as requests
+# import re
+from pytube import Playlist
+from pytube import YouTube
+from pytube.cli import on_progress
 
 
-def checking_input() -> str:
+fuchsia = '\033[38;2;255;00;255m'
+reset_color = '\033[39m'
+
+
+def convert_bytes(size):
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if size < 1024.0:
+            return "%3.1f %s" % (size, x)
+        size /= 1024.0
+
+    return size
+
+
+#
+# def valid_url() -> tuple[str, str] | str:
+#     while True:
+#         url = input("enter url: ")
+#
+#         # url = input("enter URL : ")
+#         try:
+#             re.compile("https://www.youtube.com/(.*)$").search(url).group(1)
+#
+#             if re.match("list(.*)$", url) is not None:
+#                 try:
+#
+#                     r = requests.get(url)
+#                     r.raise_for_status()
+#                     return url, "playlist"
+#
+#                 except requests.exceptions.RequestException as e:
+#                     print(str(e))
+#                     pass
+#             else:
+#                 try:
+#                     re.compile("watch(.*)$").search(url).group(1)
+#                     try:
+#                         r = requests.get(url)
+#                         r.raise_for_status()
+#                         return url, "single video"
+#                     except ConnectionError as e:
+#                         print("please enter valid input")
+#                         return str(e)
+#                         pass
+#                 except (TypeError, AttributeError) as a:
+#                     print(a)
+#                     print("please enter valid input")
+#
+#                     pass
+#
+#         except AttributeError:
+#             pass
+#
+#         else:
+#             print("please enter valid input")
+#             continue
+#
+#         break
+#
+def download_me() -> None:
     while True:
-        url = 'https://www.youtube.com/watch?v=99yGdRRNe0M&list=PLuBig59nkpxxQFW4j3ofXknuhqbgUh7ZX'
-
-        # url = input("enter URL : ")
-        if "https://www.youtube.com" in url:
-            try:
-                re.compile("list(.*)$").search(url).group(1)
-                try:
-
-                    r = requests.get(url)
-                    r.raise_for_status()
-                    return url
-
-                except requests.exceptions.RequestException as e:
-                    print(str(e))
-                    pass
-            except AttributeError as a:
-                print(a)
-                pass
-            else:
-                try:
-                    re.compile("wtach(.*)$").search(url).group(1)
-                    try:
-                        r = requests.get(url)
-                        r.raise_for_status()
-                        return url
-                    except ConnectionError as e:
-                        return str(e)
-
-                except AttributeError as a:
-                    print(a)
-                    pass
-
-        else:
-            print("please enter valid input")
-            continue
-
-        break
-
-
-def download_playlist():
-    pass
+        url = 'https://youtube.com/playlist?list=PLF0tazU4jPNKsy2IahyE2tMntaLGZ-Js-'
+        if "playlist" in url:
+            p = Playlist(url=url[0])
+            for vid in p.videos:
+                size = convert_bytes(vid.streams.get_highest_resolution().filesize)
+                resolution = vid.streams.get_highest_resolution().resolution
+                title = vid.title
+                print("title: " + title + "|| resolution: " + resolution + "|| file size: " + size)
+                vid.streams.get_highest_resolution().download(output_path='C:/Users/msi/Desktop/YT_bot')
+        elif "single video" in url:
+            v = YouTube(url[0], on_progress_callback=on_progress)
+            size = convert_bytes(v.streams.get_highest_resolution().filesize)
+            # resolution = v.streams.get_highest_resolution().resolution
+            title = v.title
+            print("title: " + title + "|| resolution: " + "|| file size: " + size)
+            v.streams.get_highest_resolution().download(output_path='C:/Users/msi/Desktop/YT_bot')
+            print(f'\nFinished downloading:  {v.title}' + reset_color)
 
 
 def main():
-    print(checking_input())
+    urll = input("enter url: ")
+    download_me(urll)
 
 
 if __name__ == "__main__":
